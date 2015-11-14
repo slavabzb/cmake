@@ -1,13 +1,13 @@
-set(MANIFEST "${CMAKE_CURRENT_BINARY_DIR}/install_manifest.txt")
+set(MANIFEST "${CMAKE_BINARY_DIR}/install_manifest.txt")
 
 if(NOT EXISTS ${MANIFEST})
-    message(FATAL_ERROR "Cannot find install manifest: '${MANIFEST}'")
+    message(FATAL_ERROR "Cannot find install manifest: ${MANIFEST}")
 endif()
 
 file(STRINGS ${MANIFEST} files)
 foreach(file ${files})
     if(EXISTS ${file})
-        message(STATUS "Removing file: '${file}'")
+        message(STATUS "Removing: ${file}")
 
         exec_program(
             ${CMAKE_COMMAND} ARGS "-E remove ${file}"
@@ -16,12 +16,9 @@ foreach(file ${files})
         )
         
         if(NOT "${result}" STREQUAL 0)
-            message(FATAL_ERROR "Failed to remove file: '${file}'.")
+            message(FATAL_ERROR "Failed to remove file: ${file}.")
         endif()
-    else()
-        message(STATUS "File '${file}' does not exist.")
     endif()
 endforeach(file)
 
 file(REMOVE_RECURSE ${INSTALL_DIR})
-
