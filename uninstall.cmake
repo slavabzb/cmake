@@ -1,3 +1,5 @@
+# Removes all the files listed in install_manifest.txt
+
 set(MANIFEST "${CMAKE_BINARY_DIR}/install_manifest.txt")
 
 if(NOT EXISTS ${MANIFEST})
@@ -14,11 +16,9 @@ foreach(file ${files})
             OUTPUT_VARIABLE stdout
             RETURN_VALUE result
         )
-        
+
         if(NOT "${result}" STREQUAL 0)
-            message(FATAL_ERROR "Failed to remove file: ${file}.")
+            message(WARNING "Failed to remove file: ${file}.")
         endif()
     endif()
 endforeach(file)
-
-file(REMOVE_RECURSE ${INSTALL_DIR})
